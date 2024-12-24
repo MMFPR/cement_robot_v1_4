@@ -12,7 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false, // إخفاء شريط الـ Debug
-      home: SafeArea(child: SplashScreen()), // تعيين شاشة الترحيب كواجهة رئيسية
+      home: SafeArea(
+          child: Expanded(
+              child: SplashScreen())), // تعيين شاشة الترحيب كواجهة رئيسية
     );
   }
 }
@@ -33,8 +35,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                const RemoteControl()), // الانتقال إلى الشاشة الثانية
+            builder: (context) => const Expanded(
+                child: RemoteControl())), // الانتقال إلى الشاشة الثانية
       );
     });
   }

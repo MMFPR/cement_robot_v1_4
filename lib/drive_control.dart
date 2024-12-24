@@ -82,28 +82,35 @@ class _DriveControlState extends State<DriveControl> {
   Widget build(BuildContext context) {
     return Expanded(
       child: Center(
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          width: MediaQuery.of(context).size.width * 0.95,
-          height: MediaQuery.of(context).size.height * 0.99,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Directional control
-              _buildDirectionalControl(),
+        child: Expanded(
+          child: Container(
+            padding: const EdgeInsets.all(1),
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Directional control
+                  Expanded(child: _buildDirectionalControl()),
 
-              // Y Axis control
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              _buildAxisControl('Y Axis', "6", "7"),
+                  // Y Axis control
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  _buildAxisControl('Y Axis', "6", "7"),
 
-              // X and Z Axis control
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              _buildXZControls(),
+                  // X and Z Axis control
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  Expanded(child: _buildXZControls()),
 
-              // Automatic control
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              _buildAutomaticControl(),
-            ],
+                  // Automatic control
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  _buildAutomaticControl(),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.01,
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -115,46 +122,62 @@ class _DriveControlState extends State<DriveControl> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: MediaQuery.of(context).size.width * 0.56,
+          width: MediaQuery.of(context).size.width * 0.66,
           height: MediaQuery.of(context).size.height * 0.28,
           decoration: BoxDecoration(
             border: Border.all(
               color: Colors.orange,
-              width: 5,
+              width: 2,
             ),
           ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              _createControlButton(
-                icon: Icons.arrow_drop_up,
-                top: 10,
-                onPressed: () => _sendBluetoothData("0"),
-                onLongPress: () => _startContinuousSending("0"),
-                onLongPressUp: _stopContinuousSending,
-              ),
-              _createControlButton(
-                icon: Icons.arrow_left,
-                left: 4,
-                onPressed: () => _sendBluetoothData("2"),
-                onLongPress: () => _startContinuousSending("2"),
-                onLongPressUp: _stopContinuousSending,
-              ),
-              _createControlButton(
-                icon: Icons.arrow_right,
-                right: 4,
-                onPressed: () => _sendBluetoothData("3"),
-                onLongPress: () => _startContinuousSending("3"),
-                onLongPressUp: _stopContinuousSending,
-              ),
-              _createControlButton(
-                icon: Icons.arrow_drop_down,
-                bottom: 10,
-                onPressed: () => _sendBluetoothData("1"),
-                onLongPress: () => _startContinuousSending("1"),
-                onLongPressUp: _stopContinuousSending,
-              ),
-            ],
+          child: Expanded(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Expanded(
+                  child: _createControlButton(
+                    icon: Icons.arrow_drop_up,
+                    top: 10,
+                    onPressed: () => _sendBluetoothData("0"),
+                    onLongPress: () => _startContinuousSending("0"),
+                    onLongPressUp: _stopContinuousSending,
+                  ),
+                ),
+                Expanded(
+                  child: _createControlButton(
+                    icon: Icons.arrow_left,
+                    left: 4,
+                    onPressed: () => _sendBluetoothData("2"),
+                    onLongPress: () => _startContinuousSending("2"),
+                    onLongPressUp: _stopContinuousSending,
+                  ),
+                ),
+                Expanded(
+                  child: _createControlButton(
+                    icon: Icons.arrow_right,
+                    right: 4,
+                    onPressed: () => _sendBluetoothData("3"),
+                    onLongPress: () => _startContinuousSending("3"),
+                    onLongPressUp: _stopContinuousSending,
+                  ),
+                ),
+                Expanded(
+                  child: _createControlButton(
+                    icon: Icons.arrow_drop_down,
+                    bottom: 10,
+                    onPressed: () => _sendBluetoothData("1"),
+                    onLongPress: () => _startContinuousSending("1"),
+                    onLongPressUp: _stopContinuousSending,
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    width: 90,
+                    height: 120,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -165,48 +188,64 @@ class _DriveControlState extends State<DriveControl> {
       String axis, String rightCommand, String leftCommand) {
     return Container(
       padding: const EdgeInsets.all(4),
-      width: MediaQuery.of(context).size.width * 0.56,
-      height: MediaQuery.of(context).size.height * 0.1,
+      width: MediaQuery.of(context).size.width * 0.66,
+      height: MediaQuery.of(context).size.height * 0.12,
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.orange,
-          width: 5,
+          width: 2,
         ),
       ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          _createControlButton(
-            icon: Icons.arrow_right,
-            right: 0,
-            onPressed: () => _sendBluetoothData(rightCommand),
-            onLongPress: () => _startContinuousSending(rightCommand),
-            onLongPressUp: _stopContinuousSending,
-          ),
-          Text(
-            axis,
-            style: const TextStyle(color: Colors.white, fontSize: 18),
-          ),
-          _createControlButton(
-            icon: Icons.arrow_left,
-            left: 0,
-            onPressed: () => _sendBluetoothData(leftCommand),
-            onLongPress: () => _startContinuousSending(leftCommand),
-            onLongPressUp: _stopContinuousSending,
-          ),
-        ],
+      child: Expanded(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Expanded(
+              child: _createControlButton(
+                icon: Icons.arrow_right,
+                right: 0,
+                onPressed: () => _sendBluetoothData(rightCommand),
+                onLongPress: () => _startContinuousSending(rightCommand),
+                onLongPressUp: _stopContinuousSending,
+              ),
+            ),
+            Expanded(
+              child: SizedBox(
+                width: 75,
+                height: 55,
+                child: Center(
+                  child: Text(
+                    axis,
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: _createControlButton(
+                icon: Icons.arrow_left,
+                left: 0,
+                onPressed: () => _sendBluetoothData(leftCommand),
+                onLongPress: () => _startContinuousSending(leftCommand),
+                onLongPressUp: _stopContinuousSending,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildXZControls() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildSingleAxisControl('X Axis', "4", "5"),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.12),
-        _buildSingleAxisControl('Z Axis', "8", "9"),
-      ],
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildSingleAxisControl('X Axis', "4", "5"),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.16),
+          _buildSingleAxisControl('Z Axis', "8", "9"),
+        ],
+      ),
     );
   }
 
@@ -214,88 +253,125 @@ class _DriveControlState extends State<DriveControl> {
       String axis, String upCommand, String downCommand) {
     return Container(
       padding: const EdgeInsets.all(4),
-      width: MediaQuery.of(context).size.width * 0.22,
+      width: MediaQuery.of(context).size.width * 0.25,
       height: MediaQuery.of(context).size.height * 0.28,
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.orange,
-          width: 5,
+          width: 2,
         ),
       ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          _createControlButton(
-            icon: Icons.arrow_drop_up,
-            top: 10,
-            onPressed: () => _sendBluetoothData(upCommand),
-            onLongPress: () => _startContinuousSending(upCommand),
-            onLongPressUp: _stopContinuousSending,
-          ),
-          Text(
-            axis,
-            style: const TextStyle(color: Colors.white, fontSize: 18),
-          ),
-          _createControlButton(
-            icon: Icons.arrow_drop_down,
-            bottom: 10,
-            onPressed: () => _sendBluetoothData(downCommand),
-            onLongPress: () => _startContinuousSending(downCommand),
-            onLongPressUp: _stopContinuousSending,
-          ),
-        ],
+      child: Expanded(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Expanded(
+              child: _createControlButton(
+                icon: Icons.arrow_drop_up,
+                top: 10,
+                onPressed: () => _sendBluetoothData(upCommand),
+                onLongPress: () => _startContinuousSending(upCommand),
+                onLongPressUp: _stopContinuousSending,
+              ),
+            ),
+            const Expanded(child: SizedBox(height: 10)),
+            Expanded(
+              child: SizedBox(
+                width: 70,
+                height: 48,
+                child: Center(
+                  child: Text(
+                    axis,
+                    style: const TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+            ),
+            const Expanded(child: SizedBox(height: 10)),
+            Expanded(
+              child: _createControlButton(
+                icon: Icons.arrow_drop_down,
+                bottom: 10,
+                onPressed: () => _sendBluetoothData(downCommand),
+                onLongPress: () => _startContinuousSending(downCommand),
+                onLongPressUp: _stopContinuousSending,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildAutomaticControl() {
     return Container(
-      padding: const EdgeInsets.all(6),
-      width: MediaQuery.of(context).size.width * 0.56,
-      height: MediaQuery.of(context).size.height * 0.07,
+      padding: const EdgeInsets.all(14),
+      width: MediaQuery.of(context).size.width * 0.66,
+      height: MediaQuery.of(context).size.height * 0.075,
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.orange,
-          width: 5,
+          width: 2,
         ),
       ),
-      child: Row(
+      child: Expanded(
+          child: Row(
         children: [
           Expanded(
             child: TextField(
               controller: _textController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter value',
-              ),
+                  border: OutlineInputBorder(),
+                  labelText: 'Enter value Cm',
+                  labelStyle: TextStyle(color: Colors.white)),
               style: const TextStyle(
                 color: Colors.white,
               ),
             ),
           ),
           const SizedBox(width: 10),
-          ElevatedButton(
-            onPressed: () {
-              String value = _textController.text.trim();
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                String value = _textController.text.trim();
 
-              if (value.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Please enter a value before proceeding.'),
-                    duration: Duration(seconds: 2),
-                    backgroundColor: Colors.red,
-                  ),
-                );
-              } else {
-                _sendBluetoothData(value);
-                debugPrint('Value sent: $value');
-              }
-            },
-            child: const Text('Auto'),
+                if (value.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter a value before proceeding.'),
+                      duration: Duration(seconds: 2),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                } else {
+                  final intValue = int.tryParse(value);
+                  if (intValue != null && intValue >= 100) {
+                    _sendBluetoothData(value);
+                    debugPrint('Value sent: $value');
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please enter a value of 100 or more.'),
+                        duration: Duration(seconds: 2),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    Colors.orange, // تعيين لون الخلفية إلى البرتقالي
+              ),
+              child: const Text(
+                'Auto',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
           ),
         ],
-      ),
+      )),
     );
   }
 }

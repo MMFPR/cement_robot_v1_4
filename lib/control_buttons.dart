@@ -13,7 +13,7 @@ class ControlButtons extends StatelessWidget {
     this.text, // النص الآن اختياري
     this.onPressed,
     this.width = 120, // قيمة افتراضية للعرض
-    this.height = 60, // قيمة افتراضية للارتفاع
+    this.height = 40, // قيمة افتراضية للارتفاع
   });
 
   @override
@@ -23,16 +23,16 @@ class ControlButtons extends StatelessWidget {
         onTap: onPressed, // تمرير onPressed مباشرة
         child: Container(
           //margin: const EdgeInsets.only(top: 30, left: 9, right: 9),
-          margin: const EdgeInsets.all(8),
+          margin: const EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
           padding: const EdgeInsets.all(1),
           width: width, // استخدام العرض الممرر أو الافتراضي
           height: height, // استخدام الارتفاع الممرر أو الافتراضي
           decoration: BoxDecoration(
             color: const Color(0xFFFF8C00),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFFFFFFFF).withOpacity(0.2),
+                color: const Color(0xFFFFFFFF).withOpacity(0.1),
                 spreadRadius: 1,
                 blurRadius: 1,
                 offset: const Offset(0, 1),
@@ -47,7 +47,7 @@ class ControlButtons extends StatelessWidget {
                 //const SizedBox(width: 12),
                 Icon(
                   icon,
-                  size: 42,
+                  size: 30,
                   color: Colors.white,
                 ),
                 //const SizedBox(width: 12),
@@ -56,12 +56,12 @@ class ControlButtons extends StatelessWidget {
                     text!,
                     style: const TextStyle(
                       color: Colors.white, // تعيين اللون الأبيض للنص
-                      fontSize: 24,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                const SizedBox(height: 1),
+                //const SizedBox(height: 10),
               ],
             ),
           ),
