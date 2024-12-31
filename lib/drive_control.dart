@@ -96,7 +96,7 @@ class _DriveControlState extends State<DriveControl> {
 
                   // Y Axis control
                   SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                  _buildAxisControl('Y Axis', "6", "7"),
+                  _buildAxisControl('Y Axis', "2", "3"),
 
                   // X and Z Axis control
                   SizedBox(height: MediaQuery.of(context).size.height * 0.01),
@@ -138,8 +138,8 @@ class _DriveControlState extends State<DriveControl> {
                   child: _createControlButton(
                     icon: Icons.arrow_drop_up,
                     top: 10,
-                    onPressed: () => _sendBluetoothData("0"),
-                    onLongPress: () => _startContinuousSending("0"),
+                    onPressed: () => _sendBluetoothData("6"),
+                    onLongPress: () => _startContinuousSending("6"),
                     onLongPressUp: _stopContinuousSending,
                   ),
                 ),
@@ -147,8 +147,8 @@ class _DriveControlState extends State<DriveControl> {
                   child: _createControlButton(
                     icon: Icons.arrow_left,
                     left: 4,
-                    onPressed: () => _sendBluetoothData("2"),
-                    onLongPress: () => _startContinuousSending("2"),
+                    onPressed: () => _sendBluetoothData("9"),
+                    onLongPress: () => _startContinuousSending("9"),
                     onLongPressUp: _stopContinuousSending,
                   ),
                 ),
@@ -156,8 +156,8 @@ class _DriveControlState extends State<DriveControl> {
                   child: _createControlButton(
                     icon: Icons.arrow_right,
                     right: 4,
-                    onPressed: () => _sendBluetoothData("3"),
-                    onLongPress: () => _startContinuousSending("3"),
+                    onPressed: () => _sendBluetoothData("8"),
+                    onLongPress: () => _startContinuousSending("8"),
                     onLongPressUp: _stopContinuousSending,
                   ),
                 ),
@@ -165,13 +165,13 @@ class _DriveControlState extends State<DriveControl> {
                   child: _createControlButton(
                     icon: Icons.arrow_drop_down,
                     bottom: 10,
-                    onPressed: () => _sendBluetoothData("1"),
-                    onLongPress: () => _startContinuousSending("1"),
+                    onPressed: () => _sendBluetoothData("7"),
+                    onLongPress: () => _startContinuousSending("7"),
                     onLongPressUp: _stopContinuousSending,
                   ),
                 ),
-                Expanded(
-                  child: Container(
+                const Expanded(
+                  child: SizedBox(
                     width: 90,
                     height: 120,
                   ),
@@ -241,9 +241,9 @@ class _DriveControlState extends State<DriveControl> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildSingleAxisControl('X Axis', "4", "5"),
+          _buildSingleAxisControl('X Axis', "0", "1"),
           SizedBox(width: MediaQuery.of(context).size.width * 0.16),
-          _buildSingleAxisControl('Z Axis', "8", "9"),
+          _buildSingleAxisControl('Z Axis', "4", "5"),
         ],
       ),
     );

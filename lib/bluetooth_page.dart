@@ -71,7 +71,7 @@ class _BluetoothPageState extends State<BluetoothPage> {
       });
       print('Connected to the device');
       // العودة إلى صفحة DriveControl بعد الاتصال الناجح
-      Navigator.pushAndRemoveUntil(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) => DriveControl(
@@ -79,7 +79,6 @@ class _BluetoothPageState extends State<BluetoothPage> {
             connection: _connection, // تمرير الاتصال البلوتوثي
           ),
         ),
-        (Route<dynamic> route) => false,
       );
     } catch (e) {
       print('Error connecting to the device: $e');
