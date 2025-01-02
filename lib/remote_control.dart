@@ -17,54 +17,48 @@ class _SecondPageState extends State<RemoteControl> {
       child: Scaffold(
         backgroundColor: const Color(0xFF4D4D4D),
         appBar: AppBar(
-          title: const Center(
-            child: Text(
-              'Remote control',
-              style: TextStyle(color: Colors.white, fontSize: 22),
-            ),
+          title: const Text(
+            'Remote control',
+            style: TextStyle(color: Colors.white, fontSize: 22),
           ),
+          centerTitle: true,
           backgroundColor: const Color(0xFFFF8C00),
           automaticallyImplyLeading: false,
         ),
-        body: Expanded(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: constraints.maxHeight * 0.004,
+                ),
+                Row(
                   children: [
-                    SizedBox(
-                      height: constraints.maxHeight * 0.004,
+                    Expanded(
+                      child: ControlButtons(
+                        icon: Icons.bluetooth,
+                        text: "Bluetooth connection",
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const BluetoothPage()),
+                          );
+                        },
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ControlButtons(
-                            icon: Icons.bluetooth,
-                            text: "Bluetooth connection",
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const BluetoothPage()),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: constraints.maxHeight * 0.0001),
-                    const Expanded(
-                      child: DriveControl(
-                          arrowsColor: Color.fromARGB(255, 255, 255, 255)),
-                    ),
-                    SizedBox(height: constraints.maxHeight * 0.0001),
                   ],
                 ),
-              );
-            },
-          ),
+                SizedBox(height: constraints.maxHeight * 0.0001),
+                const Expanded(
+                  child: DriveControl(
+                      arrowsColor: Color.fromARGB(255, 255, 255, 255)),
+                ),
+                SizedBox(height: constraints.maxHeight * 0.0001),
+              ],
+            );
+          },
         ),
       ),
     );

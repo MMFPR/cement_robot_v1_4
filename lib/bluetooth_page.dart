@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'drive_control.dart'; // استيراد صفحة DriveControl
+import 'drive_control.dart';
 
 class BluetoothPage extends StatefulWidget {
   const BluetoothPage({super.key});
@@ -23,10 +23,14 @@ class _BluetoothPageState extends State<BluetoothPage> {
   }
 
   void requestBluetoothPermissions() async {
-    if (await Permission.bluetooth.request().isGranted &&
-        await Permission.bluetoothConnect.request().isGranted &&
-        await Permission.bluetoothScan.request().isGranted &&
-        await Permission.location.request().isGranted) {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.bluetooth,
+      Permission.bluetoothConnect,
+      Permission.bluetoothScan,
+      Permission.location,
+    ].request();
+
+    if (statuses.values.every((status) => status.isGranted)) {
       print('All Bluetooth permissions granted');
       getBondedDevices();
     } else {
@@ -64,25 +68,50 @@ class _BluetoothPageState extends State<BluetoothPage> {
     });
 
     try {
+      // تأكد من إيقاف الاكتشاف قبل بدء الاتصال
+      await FlutterBluetoothSerial.instance.cancelDiscovery();
+
       BluetoothConnection connection =
           await BluetoothConnection.toAddress(device.address);
       setState(() {
         _connection = connection;
       });
       print('Connected to the device');
-      // العودة إلى صفحة DriveControl بعد الاتصال الناجح
-      Navigator.pushReplacement(
+
+      // قم بنقل الاتصال إلى DriveControl مع الاحتفاظ به
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => DriveControl(
             arrowsColor: Colors.white,
-            connection: _connection, // تمرير الاتصال البلوتوثي
+            connection: _connection!,
           ),
         ),
       );
     } catch (e) {
       print('Error connecting to the device: $e');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Connection Error'),
+          content: Text('Failed to connect to device: $e'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
+  }
+
+  @override
+  void dispose() {
+    // لا تقم بإنهاء الاتصال هنا إذا كنت تريد الاستمرار فيه بين الشاشات
+    _connection?.dispose();
+    _connection = null;
+    super.dispose();
   }
 
   @override
@@ -101,21 +130,20 @@ class _BluetoothPageState extends State<BluetoothPage> {
           ),
           centerTitle: true,
           backgroundColor: const Color(0xFFFF8C00),
-          automaticallyImplyLeading: false,
-          actions: const [
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Icon(Icons.bluetooth, color: Colors.white),
-            ),
-          ],
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: startDiscovery,
-              child: const Text('Discover New Devices'),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Discover New Devices'),
+                  SizedBox(width: 10),
+                  Icon(Icons.search),
+                ],
+              ),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -126,55 +154,32 @@ class _BluetoothPageState extends State<BluetoothPage> {
                   if (index < _bondedDevicesList.length) {
                     BluetoothDevice device = _bondedDevicesList[index];
                     return ListTile(
-                      leading: const Icon(
-                        Icons.bluetooth,
-                        color: Colors.white,
-                      ),
+                      leading: const Icon(Icons.bluetooth, color: Colors.white),
                       title: Text(
                         device.name ?? 'Unknown Device',
                         style: const TextStyle(color: Colors.white),
                       ),
-                      subtitle: Text(device.address.toString()),
+                      subtitle: Text(device.address),
                       onTap: () => connectToDevice(device),
                     );
                   } else {
                     BluetoothDiscoveryResult result = _discoveredDevicesList[
                         index - _bondedDevicesList.length];
                     return ListTile(
-                      leading: const Icon(
-                        Icons.bluetooth,
-                        color: Colors.white,
-                      ),
+                      leading: const Icon(Icons.bluetooth, color: Colors.white),
                       title: Text(
                         result.device.name ?? 'Unknown Device',
                         style: const TextStyle(color: Colors.white),
                       ),
-                      subtitle: Text(result.device.address.toString()),
+                      subtitle: Text(result.device.address),
                       onTap: () => connectToDevice(result.device),
                     );
                   }
                 },
               ),
             ),
-            const SizedBox(height: 20),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class AnotherPage extends StatelessWidget {
-  const AnotherPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Another Page'),
-      ),
-      body: const Center(
-        child: Text('Connected Successfully!'),
       ),
     );
   }
