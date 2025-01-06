@@ -90,16 +90,25 @@ class _DriveControlState extends State<DriveControl> {
         child: Container(
           padding: const EdgeInsets.all(1),
           width: MediaQuery.of(context).size.width * 0.9,
-          height: MediaQuery.of(context).size.height * 0.8,
+          height: MediaQuery.of(context).size.height * 0.85,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const Text(
+                "Created by Majed (@MMFPR)",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               // Directional control
               Expanded(child: _buildDirectionalControl()),
 
               // Y Axis control
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              _buildAxisControl('Y Axis', "2", "3"),
+              _buildAxisControl('Y Axis', "2\n", "3\n"),
 
               // X and Z Axis control
               SizedBox(height: MediaQuery.of(context).size.height * 0.01),
@@ -214,13 +223,17 @@ class _DriveControlState extends State<DriveControl> {
   }
 
   Widget _buildXZControls() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildSingleAxisControl('X Axis', "0\n", "1\n"),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.16),
-        _buildSingleAxisControl('Z Axis', "4\n", "5\n"),
-      ],
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _buildSingleAxisControl('X Axis', "0\n", "1\n"),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+          _buildKnifeControl('Knife', "10\n", "11\n"),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+          _buildSingleAxisControl('Z Axis', "4\n", "5\n"),
+        ],
+      ),
     );
   }
 
@@ -228,7 +241,7 @@ class _DriveControlState extends State<DriveControl> {
       String axis, String upCommand, String downCommand) {
     return Container(
       padding: const EdgeInsets.all(4),
-      width: MediaQuery.of(context).size.width * 0.25,
+      width: MediaQuery.of(context).size.width * 0.20,
       height: MediaQuery.of(context).size.height * 0.28,
       decoration: BoxDecoration(
         border: Border.all(
@@ -262,6 +275,49 @@ class _DriveControlState extends State<DriveControl> {
             onPressed: () => _sendBluetoothData(downCommand),
             onLongPress: () => _startContinuousSending(downCommand),
             onLongPressUp: _stopContinuousSending,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKnifeControl(String axis, String upCommand, String downCommand) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      width: MediaQuery.of(context).size.width * 0.20,
+      height: MediaQuery.of(context).size.height * 0.28,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.orange,
+          width: 2,
+        ),
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          _createControlButton(
+            icon: Icons.keyboard_double_arrow_up_outlined,
+            top: 10,
+            onPressed: () => _sendBluetoothData(upCommand),
+            onLongPress: () {}, // دالة فارغة
+            onLongPressUp: () {}, // دالة فارغة
+          ),
+          SizedBox(
+            width: 70,
+            height: 48,
+            child: Center(
+              child: Text(
+                axis,
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
+          ),
+          _createControlButton(
+            icon: Icons.keyboard_double_arrow_down_outlined,
+            bottom: 10,
+            onPressed: () => _sendBluetoothData(downCommand),
+            onLongPress: () {}, // دالة فارغة
+            onLongPressUp: () {}, // دالة فارغة
           ),
         ],
       ),
